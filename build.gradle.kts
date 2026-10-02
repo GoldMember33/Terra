@@ -1,8 +1,8 @@
 preRelease(true)
 
-versionProjects(":common:api", version("7.0.0"))
-versionProjects(":common:implementation", version("7.0.0"))
-versionProjects(":platforms", version("7.0.0"))
+versionProjects(":common:api", version("7.0.3"))
+versionProjects(":common:implementation", version("7.0.3"))
+versionProjects(":platforms", version("7.0.3"))
 
 
 allprojects {
@@ -15,7 +15,7 @@ allprojects {
     tasks.withType<JavaCompile>().configureEach {
         options.isFork = true
         options.isIncremental = true
-        options.release.set(21)
+        options.release.set(25)
     }
 
     tasks.withType<Test>().configureEach {
@@ -44,7 +44,7 @@ afterEvaluate {
         configureDistribution()
     }
     project(":platforms:bukkit:common").configureDistribution()
-    project(":platforms:minestom:example").configureDistribution()
+    //project(":platforms:minestom:example").configureDistribution()
     forSubProjects(":common:addons") {
         apply(plugin = "com.gradleup.shadow")
 

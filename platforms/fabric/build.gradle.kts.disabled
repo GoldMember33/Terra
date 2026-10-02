@@ -1,0 +1,54 @@
+import java.util.*
+
+plugins {
+    id("dev.architectury.loom-no-remap") version Versions.Mod.architecuryLoom
+    id("architectury-plugin") version Versions.Mod.architecturyPlugin
+}
+
+architectury {
+    platformSetupLoomIde()
+    loader("fabric")
+}
+
+dependencies {
+    shadedApi(project(":common:implementation:base"))
+
+    implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    "developmentFabric"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
+    implementation(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
+    "developmentFabric"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
+
+
+    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
+
+    implementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
+
+    implementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+        exclude("me.lucko", "fabric-permissions-api")
+    }
+    include("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
+
+    runtimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
+}
+
+loom {
+    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
+
+    mixin {
+        defaultRefmapName.set("terra.fabric.refmap.json")
+    }
+
+}
+
+
+addonDir(project.file("./run/config/Terra/addons"), tasks.named("configureLaunch").get())
+
+tasks {
+    // Minecraft 26.1+ is not obfuscated, so loom no longer produces a `remapJar`.
+    // The shaded jar is the final mod artifact.
+    shadowJar {
+        archiveFileName.set("${rootProject.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}-fabric-${project.version}.jar")
+    }
+}

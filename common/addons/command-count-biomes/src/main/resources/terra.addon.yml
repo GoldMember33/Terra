@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - GoldMember33
+id: command-count-biomes
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.commands.count_pack_biomes.CountPackBiomesCommandAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License

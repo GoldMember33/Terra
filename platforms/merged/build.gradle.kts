@@ -1,5 +1,5 @@
 val platformOverrides = mapOf(
-    "fabric" to "remapJar"
+    "fabric" to "shadowJar"
 )
 
 dependencies {
@@ -31,6 +31,7 @@ afterEvaluate {
             throw IllegalArgumentException("Task dependency must be Archive Task: " + task.name)
         }
         tasks["dumpDependents"].dependsOn(task)
+        it.tasks.findByName("installAddons")?.let { addons -> tasks["dumpDependents"].dependsOn(addons) }
         taskSet.add(task)
         logger.info("Merged JAR will incorporate task ${task.name} from platform ${it.name}.")
     }

@@ -52,8 +52,7 @@ public class BiomeLocator {
         // 2. Begin Parallel Square Spiral Search
         // We iterate rings sequentially to guarantee finding the *nearest* result.
         // However, we process all points within a specific ring in parallel.
-        for (int r = step; r <= radius; r += step) {
-            final int currentRadius = r;
+        for (int currentRadius = step; currentRadius <= radius; currentRadius += step) {
             final int minX = -currentRadius;
             final int maxX = currentRadius;
             final int minZ = -currentRadius;
@@ -112,6 +111,7 @@ public class BiomeLocator {
         int minHeight,
         int maxHeight
     ) {
+
         if (search3D) {
             // Iterate from bottom to top of the world using the step
             for (int y = minHeight; y < maxHeight; y += step) {

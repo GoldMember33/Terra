@@ -1,4 +1,3 @@
-import java.io.ByteArrayOutputStream
 import org.gradle.api.Action
 import org.gradle.api.Project
 
@@ -7,20 +6,15 @@ var isPrerelease = false
 
 
 fun Project.getGitHash(): String {
-    val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine = mutableListOf("git", "rev-parse", "--short", "HEAD")
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
+    return providers.exec {
+        commandLine("git", "rev-parse", "--short", "HEAD")
+    }.standardOutput.asText.get().trim()
 }
 
 fun Project.gitClone(name: String) {
-    val stdout = ByteArrayOutputStream()
-    exec {
-        commandLine = mutableListOf("git", "clone", name)
-        standardOutput = stdout
-    }
+    providers.exec {
+        commandLine("git", "clone", name)
+    }.result.get()
 }
 
 fun Project.forSubProjects(project: String, action: Action<Project>) {

@@ -21,7 +21,6 @@ includeImmediateChildren(file("platforms"), "platform")
 includeImmediateChildren(file("platforms/bukkit/nms"), "Bukkit NMS")
 
 include(":platforms:bukkit:common")
-include(":platforms:minestom:example")
 
 pluginManagement {
     repositories {
@@ -47,7 +46,10 @@ pluginManagement {
     }
 }
 
-// settings.gradle.kts
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 val isCiServer = System.getenv().containsKey("CI")
 // Cache build artifacts, so expensive operations do not need to be re-computed
 buildCache {

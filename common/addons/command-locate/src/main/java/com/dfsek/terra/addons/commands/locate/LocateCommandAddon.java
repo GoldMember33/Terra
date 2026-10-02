@@ -9,6 +9,9 @@ import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.description.Description;
 import org.incendo.cloud.parser.standard.IntegerParser;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
@@ -25,6 +28,8 @@ import com.dfsek.terra.api.util.generic.either.Either;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
+
+import org.incendo.cloud.suggestion.SuggestionProvider;
 
 
 public class LocateCommandAddon implements AddonInitializer {
@@ -48,10 +53,29 @@ public class LocateCommandAddon implements AddonInitializer {
                 manager.command(
                     manager.commandBuilder("search", Description.of("Locate things in the world"))
                         .literal("biome")
+
                         // Argument 1: The Biome to search for
                         .argument(RegistryArgument.builder("biome",
-                            LocateCommandAddon::getBiomeRegistry,
-                            TypeKey.of(Biome.class)))
+                                LocateCommandAddon::getBiomeRegistry,
+                                TypeKey.of(Biome.class))
+
+                            // Applying tab completion suggestions to biome argument.
+                            .suggestionProvider(SuggestionProvider.blockingStrings((context, input) -> {
+
+                                String typed = input.lastRemainingToken().toLowerCase(Locale.ROOT);
+                                List<String> suggestions = new ArrayList<>();
+
+                                for(Biome biome : getBiomeRegistry(context).entries()) {
+                                    String id = biome.getID();
+                                    if(id.toLowerCase(Locale.ROOT).startsWith(typed)) {
+                                        suggestions.add(id);
+                                    }
+                                }
+
+                                return suggestions;
+                            })))
+
+
                         // Argument 2: Radius (Optional, default 5000)
                         .optional("radius", IntegerParser.integerParser(100), DefaultValue.constant(5000))
                         // Argument 3: Step/Resolution (Optional, default 16)
@@ -94,7 +118,7 @@ public class LocateCommandAddon implements AddonInitializer {
                                     sender.position().getFloorZ(),
                                     radius,
                                     currentStep,
-                                    found -> found.equals(targetBiome), // Match specific biome instance
+                                    found -> found.equals(targetBiome), // Match-specific biome instance
                                     search3D
                                 );
 

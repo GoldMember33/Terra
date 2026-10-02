@@ -32,8 +32,8 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.134.1+${Mod.minecraft}"
-        const val cloud = "2.0.0-beta.13"
+        const val fabricAPI = "0.161.0+${Mod.minecraft}"
+        const val cloud = "2.1.0"
     }
 //
 //    object Quilt {
@@ -42,15 +42,16 @@ object Versions {
 //    }
     
     object Mod {
-        const val mixin = "0.16.4+mixin.0.8.7"
-        const val mixinExtras = "0.5.0"
+        const val mixin = "0.17.4+mixin.0.8.7"
+        const val mixinExtras = "0.5.5"
         
-        const val minecraft = "1.21.10"
-        const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.18.2"
+        const val minecraft = "26.2"
+        // Minecraft 26.1+ ships unobfuscated; Fabric publishes a no-op intermediary for these versions.
+        const val intermediary = "0.0.0"
+        const val fabricLoader = "0.19.5"
         
-        const val architecuryLoom = "1.11.451"
-        const val architecturyPlugin = "3.4.162"
+        const val architecuryLoom = "1.17.493"
+        const val architecturyPlugin = "3.5.170"
 
     }
 //
@@ -60,17 +61,17 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.21.10"
+        const val minecraft = "26.2"
         const val nms = "$minecraft-R0.1"
-        const val paperBuild = "$nms-20251012.013929-7"
+        const val paperBuild = "26.2.build.+"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.3"
         const val paperDevBundle = paperBuild
         const val runPaper = "2.3.1"
-        const val paperWeight = "2.0.0-beta.19"
-        const val cloud = "2.0.0-beta.12"
-        const val multiverse = "5.3.0"
+        const val paperWeight = "2.0.0-beta.24"
+        const val cloud = "2.0.0-beta.17"
+        const val multiverse = "5.8.1"
     }
     
 //
@@ -96,6 +97,6 @@ object Versions {
     }
     
     object Minestom {
-        const val minestom = "2025.10.04-1.21.8"
+        const val minestom = "2026.09.12-26.2"
     }
 }

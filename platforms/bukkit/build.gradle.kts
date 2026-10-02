@@ -3,12 +3,14 @@ plugins {
     id("xyz.jpenilla.run-paper") version Versions.Bukkit.runPaper
 }
 
+paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
+
 dependencies {
     // Required for :platforms:bukkit:runDevBundleServer task
     paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
 
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms"))
+    shaded(project(path = ":platforms:bukkit:nms", configuration = "runtimeElements"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
@@ -37,6 +39,5 @@ tasks {
         }
     }
 }
-
 
 addonDir(project.file("./run/plugins/Terra/addons"), tasks.named("runServer").get())
